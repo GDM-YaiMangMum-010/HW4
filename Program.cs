@@ -60,13 +60,17 @@ class Program
             if(vacator == tree.Get(i))
             {
                 compare = slevel.Get(i);
+                group = sgroup.Get(i);
             }
         }
         for(int i=0; i<tree.GetLength(); i++)
         {
             if(slevel.Get(i) < compare)
             {
-                sname.Push(tree.Get(i));
+                if(sgroup.Get(i) <= group)
+                {
+                    sname.Push(tree.Get(i));
+                }
             }
         }
         // Check data
