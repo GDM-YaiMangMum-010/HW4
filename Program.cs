@@ -4,10 +4,11 @@ class Program
      static void Main(string[] args)
     {
         bool exit = false,exitname = false,exitbranch = false;
-        int level = -1,countbranch = 0,count = 0,group = -1;
+        int level = -1,countbranch = 0,count = 0,group = 0;
         Stack<string> sname = new Stack<string>();
         Stack<int> sbranch = new Stack<int>();
-        Stack<int> slevel = new Stack<int>();
+        Tree<int> sgroup = new Tree<int>();
+        Tree<int> slevel = new Tree<int>();
         Tree<string> tree = new Tree<string>();
         while(true)
         {
@@ -16,7 +17,8 @@ class Program
             if(branch > 0)
             {
                 tree.AddChild(level,name);
-                slevel.Push(level);
+                slevel.AddChild(level,level);
+                sgroup.AddChild(level,group);
                 level++;
                 group++;
                 countbranch += branch;
@@ -31,47 +33,52 @@ class Program
                 if(count+1 < sbranch.Get(sbranch.GetLength()-1))
                 {
                     tree.AddChild(level,name);
-                    slevel.Push(level);
+                    slevel.AddChild(level,level);
                     count++;
                     countbranch--;
                 }
                 else
                 {
                     tree.AddChild(level,name);
-                    slevel.Push(level);
+                    slevel.AddChild(level,level);
                     sbranch.Pop();
                     count = 0;
                     level--;
                     countbranch--;
-                    group++;
                 }
             }
+            
             if(countbranch == 0)
             {
                 break;
             }
-            int c = 0;
-        c++;
+        }
+        string vacator = Console.ReadLine();
+        int compare = 0;
+        for(int i=0; i<tree.GetLength(); i++)
+        {
+            if(vacator == tree.Get(i))
+            {
+                compare = slevel.Get(i);
+            }
         }
         for(int i=0; i<tree.GetLength(); i++)
         {
-            sname.Push(tree.Get(i));
-            Console.WriteLine(slevel.Get(i));
+            if(slevel.Get(i) < compare)
+            {
+                sname.Push(tree.Get(i));
+            }
         }
-        string vacator = Console.ReadLine();
-        int compare = 0,j = 0;
-        for(int i = 0; i<tree.GetLength(); i++)
+        // Check data
+        /*
+        for(int i=0; i<tree.GetLength(); i++)
         {
-            if(vacator == tree.Get(j))
-            {
-                level = slevel.Get(j);
-            }
-            else
-            {
-                sname.Pop();
-                j++;
-            }
+            Console.WriteLine("{0} {1} {2} ",tree.Get(i),sgroup.Get(i),slevel.Get(i));
         }
-        Console.WriteLine(sname.Pop());
+        */
+        for(int i=0; i<sname.GetLength(); i++)
+        {
+            Console.WriteLine(sname.Get(i));
+        }
     }
 }
